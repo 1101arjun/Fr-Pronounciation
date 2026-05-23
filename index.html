@@ -1,0 +1,1000 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Easy French Pronunciation - Version 1</title>
+    <style>
+        :root {
+            --terracotta: #c2593f;
+            --mustard: #e0a927;
+            --olive: #606c38;
+            --cream: #fefae0;
+            --dark-charcoal: #2b2d42;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--terracotta);
+            margin: 0;
+            padding: 0;
+            color: var(--dark-charcoal);
+            overflow-x: hidden;
+        }
+
+        /* --- HARDCOPY STYLE COVER CANVAS --- */
+        .cover-canvas {
+            position: relative;
+            width: 100%;
+            height: 100vh;
+            background-color: var(--terracotta);
+            background-image: 
+                radial-gradient(rgba(0, 0, 0, 0.12) 15%, transparent 16%),
+                radial-gradient(rgba(0, 0, 0, 0.12) 15%, transparent 16%),
+                linear-gradient(rgba(194, 89, 63, 0.35), rgba(138, 56, 36, 0.85));
+            background-size: 4px 4px, 4px 4px, 100% 100%;
+            background-position: 0 0, 2px 2px, 0 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            box-sizing: border-box;
+            z-index: 1;
+            box-shadow: inset 0 0 100px rgba(0,0,0,0.4);
+        }
+
+        /* --- SCATTERED ELEMENTS BACKGROUND LAYER --- */
+        .alphabet-scatter-layer {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            pointer-events: none;
+            z-index: 2;
+        }
+
+        .scattered-item {
+            position: absolute;
+            font-weight: 800;
+            user-select: none;
+            opacity: 0.85;
+        }
+
+        .sc-letter {
+            font-family: 'Georgia', serif;
+            color: rgba(254, 250, 224, 0.9);
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.15);
+        }
+
+        .sc-yellow {
+            color: var(--mustard);
+        }
+
+        .sc-icon {
+            font-size: 2.5rem;
+            filter: drop-shadow(2px 4px 6px rgba(0,0,0,0.15));
+        }
+
+        /* Precise spatial positioning mapping */
+        .item-1  { top: 5%;   left: 6%;   font-size: 4.5rem;  transform: rotate(-12deg); }
+        .item-2  { top: 7%;   left: 27%;  font-size: 3.5rem;  transform: rotate(15deg); }
+        .item-3  { top: 4%;   left: 41%;  font-size: 4rem;    transform: rotate(-5deg); }
+        .item-4  { top: 12%;  left: 67%;  font-size: 4.8rem;  transform: rotate(18deg); }
+        .item-5  { top: 3%;   left: 90%;  font-size: 5rem;    transform: rotate(-15deg); }
+        .item-6  { top: 18%;  left: 10%;  font-size: 4.2rem;  transform: rotate(25deg); }
+        .item-7  { top: 28%;  left: 5%;   font-size: 4.5rem;  transform: rotate(-20deg); }
+        .item-8  { top: 48%;  left: 7%;   font-size: 3.8rem;  transform: rotate(12deg); }
+        .item-9  { top: 62%;  left: 4%;   font-size: 4.6rem;  transform: rotate(-10deg); }
+        .item-10 { top: 78%;  left: 8%;   font-size: 4rem;    transform: rotate(22deg); }
+        .item-11 { top: 90%;  left: 5%;   font-size: 4.5rem;  transform: rotate(-8deg); }
+        .item-12 { top: 22%;  left: 88%;  font-size: 4.2rem;  transform: rotate(-18deg); }
+        .item-13 { top: 36%;  left: 92%;  font-size: 4.5rem;  transform: rotate(15deg); }
+        .item-14 { top: 52%;  left: 87%;  font-size: 3.8rem;  transform: rotate(-25deg); }
+        .item-15 { top: 70%;  left: 91%;  font-size: 4.6rem;  transform: rotate(10deg); }
+        .item-16 { top: 88%;  left: 86%;  font-size: 4rem;    transform: rotate(-12deg); }
+        .item-17 { top: 92%;  left: 45%;  font-size: 4rem;    transform: rotate(5deg); }
+        
+        /* Interactive graphics mapping */
+        .item-i1 { top: 14%;  left: 16%; }
+        .item-i2 { top: 6%;   left: 51%; }
+        .item-i3 { top: 7%;   left: 76%; }
+        .item-i4 { top: 9%;   left: 84%; }
+        .item-i5 { top: 38%;  left: 13%; }
+        .item-i6 { top: 53%;  left: 15%; }
+        .item-i7 { top: 74%;  left: 17%; }
+        .item-i8 { top: 84%;  left: 31%; }
+        .item-i9 { top: 83%;  left: 50%; }
+        .item-i10{ top: 51%;  left: 78%; }
+        .item-i11{ top: 61%;  left: 77%; }
+        .item-i12{ top: 87%;  left: 73%; }
+
+        /* --- ORNATE EMBOSSED BOOK PLATE COVERS --- */
+        .book-plate-wrapper {
+            position: relative;
+            z-index: 3;
+            width: 90%;
+            max-width: 560px;
+            text-align: center;
+            box-sizing: border-box;
+        }
+
+        .oval-frame {
+            background-color: var(--cream);
+            padding: 45px 30px;
+            border-radius: 50%;
+            box-shadow: 
+                0 0 0 4px var(--cream),
+                0 0 0 10px var(--olive),
+                0 0 0 18px var(--mustard),
+                0 15px 40px rgba(0, 0, 0, 0.5);
+            border: 3px double var(--terracotta);
+            margin-bottom: -20px;
+            position: relative;
+            z-index: 2;
+        }
+
+        .frame-badge {
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: var(--olive);
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .frame-title {
+            font-family: 'Georgia', serif;
+            color: var(--dark-charcoal);
+            font-size: 3.4rem;
+            font-weight: 900;
+            margin: 5px 0;
+            line-height: 1.05;
+            text-transform: uppercase;
+            letter-spacing: -1px;
+        }
+
+        .frame-subtitle {
+            font-family: 'Georgia', serif;
+            font-style: italic;
+            color: var(--terracotta);
+            font-size: 1.4rem;
+            margin: 10px 0 0 0;
+            font-weight: 600;
+        }
+
+        .center-lip-icon {
+            font-size: 3.2rem;
+            margin: 12px 0;
+            display: inline-block;
+            animation: pulse-mouth 2.5s ease-in-out infinite;
+        }
+
+        @keyframes pulse-mouth {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.08); }
+        }
+
+        .sub-plinth {
+            background-color: var(--cream);
+            padding: 40px 30px 25px 30px;
+            border-radius: 4px;
+            box-shadow: 
+                0 0 0 4px var(--cream),
+                0 0 0 8px var(--olive),
+                0 12px 30px rgba(0,0,0,0.4);
+            border: 2px solid var(--mustard);
+            position: relative;
+            z-index: 1;
+        }
+
+        .plinth-box-inside {
+            border: 2px dashed var(--terracotta);
+            padding: 20px 15px;
+            border-radius: 4px;
+            background-color: #fffbeb;
+        }
+
+        .plinth-header-text {
+            font-family: 'Georgia', serif;
+            font-size: 1.5rem;
+            font-weight: 900;
+            color: var(--terracotta);
+            text-transform: uppercase;
+            margin: 0 0 10px 0;
+            letter-spacing: 0.5px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .plinth-desc {
+            font-size: 1rem;
+            font-weight: bold;
+            color: var(--dark-charcoal);
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            margin: 0;
+            line-height: 1.4;
+        }
+
+        .footer-edition-label {
+            margin-top: 25px;
+            font-family: 'Georgia', serif;
+            font-size: 1.4rem;
+            font-weight: 900;
+            color: var(--dark-charcoal);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .scroll-trigger-btn {
+            position: absolute;
+            bottom: 25px;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: var(--mustard);
+            color: var(--dark-charcoal);
+            padding: 12px 26px;
+            border-radius: 30px;
+            font-weight: 900;
+            text-decoration: none;
+            box-shadow: 0 6px 20px rgba(0,0,0,0.4);
+            font-size: 0.95rem;
+            letter-spacing: 1px;
+            transition: background-color 0.2s, transform 0.2s;
+            z-index: 10;
+            animation: wave-ring 2s infinite;
+            border: none;
+            cursor: pointer;
+            text-transform: uppercase;
+        }
+
+        .scroll-trigger-btn:hover {
+            background-color: #f1b933;
+            transform: translateX(-50%) translateY(-2px);
+        }
+
+        @keyframes wave-ring {
+            0% { box-shadow: 0 0 0 0 rgba(224, 169, 39, 0.6); }
+            70% { box-shadow: 0 0 0 14px rgba(224, 169, 39, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(224, 169, 39, 0); }
+        }
+
+        /* --- INTERNAL STUDY CORE WRAPPER --- */
+        .internal-content-wrapper {
+            background-image: linear-gradient(rgba(194, 89, 63, 0.85), rgba(194, 89, 63, 0.85)), url('https://images.unsplash.com/photo-1502602898657-3e91760cbb34?auto=format&fit=crop&w=1200&q=80');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            padding: 60px 20px;
+            box-sizing: border-box;
+            min-height: 100vh;
+        }
+
+        .book-inner-container {
+            max-width: 1050px;
+            margin: 0 auto;
+            background-color: rgba(254, 250, 224, 0.98);
+            padding: 40px;
+            border-radius: 8px;
+            box-shadow: 0 12px 40px rgba(0,0,0,0.35);
+            border: 4px solid var(--mustard);
+        }
+
+        .dashboard {
+            background-color: rgba(96, 108, 56, 0.08);
+            border-left: 6px solid var(--olive);
+            padding: 20px;
+            margin-bottom: 35px;
+            border-radius: 0 8px 8px 0;
+        }
+
+        .dashboard h3 {
+            margin-top: 0;
+            color: var(--olive);
+            font-size: 1.2rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .dashboard ul {
+            list-style-type: none;
+            padding: 0;
+            margin: 0;
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+            gap: 12px;
+        }
+
+        .dashboard a {
+            color: var(--terracotta);
+            text-decoration: none;
+            font-weight: bold;
+            transition: color 0.2s;
+        }
+
+        .dashboard a:hover {
+            color: var(--mustard);
+            text-decoration: underline;
+        }
+
+        .section-anchor {
+            padding-top: 30px;
+            margin-top: 40px;
+        }
+
+        h2 {
+            color: var(--olive);
+            border-bottom: 2px solid var(--mustard);
+            padding-bottom: 8px;
+            font-size: 1.6rem;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 18px;
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.06);
+        }
+
+        th, td {
+            padding: 14px 16px;
+            text-align: left;
+            border-bottom: 1px solid #eee;
+            vertical-align: middle;
+        }
+
+        th {
+            background-color: var(--olive);
+            color: white;
+            font-weight: 600;
+            text-transform: uppercase;
+            font-size: 0.9rem;
+            letter-spacing: 0.5px;
+        }
+
+        tr:hover {
+            background-color: rgba(224, 169, 39, 0.04);
+        }
+
+        .vowel-container {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .vowel-cell {
+            font-size: 1.3rem;
+            color: var(--dark-charcoal);
+            font-weight: bold;
+            white-space: nowrap;
+            min-width: 60px;
+        }
+
+        .audio-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            padding: 8px 12px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 0.85rem;
+            color: white;
+            transition: transform 0.1s, background-color 0.2s, box-shadow 0.2s;
+            text-decoration: none;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            white-space: nowrap;
+        }
+
+        .audio-btn:active {
+            transform: scale(0.95);
+        }
+
+        .btn-son {
+            background-color: var(--mustard);
+            color: var(--dark-charcoal);
+        }
+
+        .btn-son:hover {
+            background-color: #f1b933;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.15);
+        }
+
+        .btn-phrase {
+            background-color: var(--terracotta);
+        }
+
+        .btn-phrase:hover {
+            background-color: #d46347;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.15);
+        }
+
+        .tip-box {
+            font-size: 0.95rem;
+            color: #4a4a4a;
+            line-height: 1.45;
+        }
+
+        .phrase-cell-container {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 15px;
+        }
+
+        .text-side {
+            flex-grow: 1;
+        }
+
+        .french-txt {
+            font-weight: bold;
+            color: var(--dark-charcoal);
+            font-size: 1.05rem;
+            display: block;
+        }
+
+        .english-txt {
+            font-style: italic;
+            color: #555;
+            font-size: 0.9rem;
+            display: block;
+            margin-top: 4px;
+        }
+
+        .back-to-top {
+            display: inline-block;
+            margin-top: 18px;
+            font-size: 0.9rem;
+            color: var(--terracotta);
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .back-to-top:hover {
+            color: var(--mustard);
+            text-decoration: underline;
+        }
+
+        footer {
+            text-align: center;
+            margin-top: 50px;
+            font-size: 0.9rem;
+            color: #666;
+            border-top: 1px solid #ddd;
+            padding-top: 25px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="cover-canvas">
+        <div class="alphabet-scatter-layer">
+            <div class="scattered-item sc-letter item-1">A</div>
+            <div class="scattered-item sc-letter item-6">F</div>
+            <div class="scattered-item sc-letter sc-yellow item-7">G</div>
+            <div class="scattered-item sc-letter item-8">i</div>
+            <div class="scattered-item sc-letter item-9">C</div>
+            <div class="scattered-item sc-letter item-10">P</div>
+            <div class="scattered-item sc-letter item-11">t</div>
+            <div class="scattered-item sc-letter item-2">B</div>
+            <div class="scattered-item sc-letter sc-yellow item-3">C</div>
+            <div class="scattered-item sc-letter item-4">É</div>
+            <div class="scattered-item sc-letter item-5">Ô</div>
+            <div class="scattered-item sc-letter item-12">œ</div>
+            <div class="scattered-item sc-letter sc-yellow item-13">Ô</div>
+            <div class="scattered-item sc-letter item-14">Ç</div>
+            <div class="scattered-item sc-letter item-15">Â</div>
+            <div class="scattered-item sc-letter sc-yellow item-16">u</div>
+            <div class="scattered-item sc-letter item-17">C</div>
+
+            <span class="scattered-item sc-icon item-i1">🗼</span>
+            <span class="scattered-item sc-icon item-i2">🐦</span>
+            <span class="scattered-item sc-icon item-i3">🗣️</span>
+            <span class="scattered-item sc-icon item-i4">🔊</span>
+            <span class="scattered-item sc-icon item-i5">🥐</span>
+            <span class="scattered-item sc-icon item-i6">📻</span>
+            <span class="scattered-item sc-icon item-i7">💬</span>
+            <span class="scattered-item sc-icon item-i8">🎵</span>
+            <span class="scattered-item sc-icon item-i9">🥐</span>
+            <span class="scattered-item sc-icon item-i10">🎶</span>
+            <span class="scattered-item sc-icon item-i11">🐦</span>
+            <span class="scattered-item sc-icon item-i12">🗼</span>
+        </div>
+
+        <div class="book-plate-wrapper">
+            <div class="oval-frame">
+                <div class="frame-badge">The Complete Audio Matrix</div>
+                <h1 class="frame-title">Easy French<br>Pronunciation</h1>
+                <div class="center-lip-icon">👄</div>
+                <div class="frame-subtitle">A Guide to Vowels & Oral Nasals</div>
+            </div>
+
+            <div class="sub-plinth">
+                <div class="plinth-box-inside">
+                    <div class="plinth-header-text">🎵 Audio Enabled 🎵</div>
+                    <p class="plinth-desc">An Absolute Beginner's Guide for Mastering Vowels & Oral Nasals</p>
+                </div>
+                <div class="footer-edition-label">Study Companion Edition • V1</div>
+            </div>
+        </div>
+
+        <button class="scroll-trigger-btn" onclick="document.getElementById('study-matrix-section').scrollIntoView({behavior: 'smooth'});">Explore Study Matrix 🔽</button>
+    </div>
+
+    <div id="study-matrix-section" class="internal-content-wrapper">
+        <div class="book-inner-container">
+
+            <div class="dashboard">
+                <h3>🎯 Quick Navigation Index</h3>
+                <ul>
+                    <li><a href="#vowels-a">1. "A" Sounds & Fundamental Blends</a></li>
+                    <li><a href="#vowels-e">2. Variations of "E" (Accents & Silents)</a></li>
+                    <li><a href="#vowels-i-o">3. Perfecting "I" & "O" Spaces</a></li>
+                    <li><a href="#vowels-ou-u">4. Complex Combinations & Nasals</a></li>
+                </ul>
+            </div>
+
+            <div id="vowels-a" class="section-anchor">
+                <h2>1. "A" Sounds & Fundamental Blends</h2>
+                <table>
+                    <thead>
+                        <tr>
+                            <th style="width: 5%;">No.</th>
+                            <th style="width: 24%;">Vowel & Isolated Sound Trigger</th>
+                            <th style="width: 33%;">Pronunciation Tip (English)</th>
+                            <th style="width: 38%;">Example Sentence & Context Audio</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>1</td>
+                            <td>
+                                <div class="vowel-container">
+                                    <span class="vowel-cell">a, à</span>
+                                    <button class="audio-btn btn-son" onclick="new Audio('https://audiocdn.frenchtoday.com/file/ft-public-files/audioclick/blog/vowels/A.mp3').play()">🎯 Sound</button>
+                                </div>
+                            </td>
+                            <td class="tip-box">Like "ah" in English. When written as "à", the pronunciation does not change.</td>
+                            <td>
+                                <div class="phrase-cell-container">
+                                    <div class="text-side">
+                                        <span class="french-txt">Anne va à la plage.</span>
+                                        <span class="english-txt">Anne goes to the beach.</span>
+                                    </div>
+                                    <button class="audio-btn btn-phrase" onclick="new Audio('https://audiocdn.frenchtoday.com/file/ft-public-files/audioclick/blog/french_pronunciation/01.mp3').play()">📖 Phrase</button>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>2</td>
+                            <td>
+                                <div class="vowel-container">
+                                    <span class="vowel-cell">â</span>
+                                    <button class="audio-btn btn-son" onclick="new Audio('https://audiocdn.frenchtoday.com/file/ft-public-files/audioclick/blog/vowels/A.mp3').play()">🎯 Sound</button>
+                                </div>
+                            </td>
+                            <td class="tip-box">Not always pronounced differently, but it sometimes makes the "a" sound a tiny bit longer.</td>
+                            <td>
+                                <div class="phrase-cell-container">
+                                    <div class="text-side">
+                                        <span class="french-txt">Anne regarde son âne.</span>
+                                        <span class="english-txt">Anne looks at her donkey.</span>
+                                    </div>
+                                    <button class="audio-btn btn-phrase" onclick="new Audio('https://audiocdn.frenchtoday.com/file/ft-public-files/audioclick/blog/french_pronunciation/02.mp3').play()">📖 Phrase</button>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>3</td>
+                            <td>
+                                <div class="vowel-container">
+                                    <span class="vowel-cell">ai</span>
+                                    <button class="audio-btn btn-son" onclick="new Audio('https://audiocdn.frenchtoday.com/file/ft-public-files/audioclick/blog/vowels/ay.mp3').play()">🎯 Sound</button>
+                                </div>
+                            </td>
+                            <td class="tip-box">A and I combine to make an open "è" sound. Highly common in Imparfait past tense endings.</td>
+                            <td>
+                                <div class="phrase-cell-container">
+                                    <div class="text-side">
+                                        <span class="french-txt">Anne aimait son âne.</span>
+                                        <span class="english-txt">Anne loved her donkey.</span>
+                                    </div>
+                                    <button class="audio-btn btn-phrase" onclick="new Audio('https://audiocdn.frenchtoday.com/file/ft-public-files/audioclick/blog/french_pronunciation/03.mp3').play()">📖 Phrase</button>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>4</td>
+                            <td>
+                                <div class="vowel-container">
+                                    <span class="vowel-cell">au, eau</span>
+                                    <button class="audio-btn btn-son" onclick="new Audio('https://audiocdn.frenchtoday.com/file/ft-public-files/audioclick/blog/vowels/o.mp3').play()">🎯 Sound</button>
+                                </div>
+                            </td>
+                            <td class="tip-box">These letters combine to make a closed "o" sound, like the "o" in the English word "toe".</td>
+                            <td>
+                                <div class="phrase-cell-container">
+                                    <div class="text-side">
+                                        <span class="french-txt">Au parc, Anne a de l'eau.</span>
+                                        <span class="english-txt">At the park, Anne has water.</span>
+                                    </div>
+                                    <button class="audio-btn btn-phrase" onclick="new Audio('https://audiocdn.frenchtoday.com/file/ft-public-files/audioclick/blog/french_pronunciation/04.mp3').play()">📖 Phrase</button>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <a href="#" class="back-to-top">▲ Back to Menu</a>
+            </div>
+
+            <div id="vowels-e" class="section-anchor">
+                <h2>2. Variations of "E" (Accents & Silents)</h2>
+                <table>
+                    <thead>
+                        <tr>
+                            <th style="width: 5%;">No.</th>
+                            <th style="width: 24%;">Vowel & Isolated Sound Trigger</th>
+                            <th style="width: 33%;">Pronunciation Tip (English)</th>
+                            <th style="width: 38%;">Example Sentence & Context Audio</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>5</td>
+                            <td>
+                                <div class="vowel-container">
+                                    <span class="vowel-cell">an, am...</span>
+                                    <button class="audio-btn btn-son" onclick="new Audio('https://audiocdn.frenchtoday.com/file/ft-public-files/audioclick/blog/vowels/AN.mp3').play()">🎯 Sound</button>
+                                </div>
+                            </td>
+                            <td class="tip-box">Deep French nasal sound made from the back of the throat. Can also be spelled "en" or "em".</td>
+                            <td>
+                                <div class="phrase-cell-container">
+                                    <div class="text-side">
+                                        <span class="french-txt">L'ambulance a un grand panneau blanc.</span>
+                                        <span class="english-txt">The ambulance has a large white panel.</span>
+                                    </div>
+                                    <button class="audio-btn btn-phrase" onclick="new Audio('https://audiocdn.frenchtoday.com/file/ft-public-files/audioclick/blog/french_pronunciation/05.mp3').play()">📖 Phrase</button>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>6</td>
+                            <td>
+                                <div class="vowel-container">
+                                    <span class="vowel-cell">ain</span>
+                                    <button class="audio-btn btn-son" onclick="new Audio('https://audiocdn.frenchtoday.com/file/ft-public-files/audioclick/blog/vowels/in.mp3').play()">🎯 Sound</button>
+                                </div>
+                            </td>
+                            <td class="tip-box">A more smiling, flatter nasal sound. Perfectly identical to the "in" sound.</td>
+                            <td>
+                                <div class="phrase-cell-container">
+                                    <div class="text-side">
+                                        <span class="french-txt">Anne a faim : elle mange du pain.</span>
+                                        <span class="english-txt">Anne is hungry: she eats some bread.</span>
+                                    </div>
+                                    <button class="audio-btn btn-phrase" onclick="new Audio('https://audiocdn.frenchtoday.com/file/ft-public-files/audioclick/blog/french_pronunciation/06.mp3').play()">📖 Phrase</button>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>7</td>
+                            <td>
+                                <div class="vowel-container">
+                                    <span class="vowel-cell">e, eu</span>
+                                    <button class="audio-btn btn-son" onclick="new Audio('https://audiocdn.frenchtoday.com/file/ft-public-files/audioclick/blog/vowels/E.mp3').play()">🎯 Sound</button>
+                                </div>
+                            </td>
+                            <td class="tip-box">Sounds a bit like the "i" in "sir". Note that "e" is very frequently silent at the end of French words.</td>
+                            <td>
+                                <div class="phrase-cell-container">
+                                    <div class="text-side">
+                                        <span class="french-txt">Je veux acheter ce jeu de cartes.</span>
+                                        <span class="english-txt">I want to buy this card game.</span>
+                                    </div>
+                                    <button class="audio-btn btn-phrase" onclick="new Audio('https://audiocdn.frenchtoday.com/file/ft-public-files/audioclick/blog/french_pronunciation/07.mp3').play()">📖 Phrase</button>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>8</td>
+                            <td>
+                                <div class="vowel-container">
+                                    <span class="vowel-cell">oeu, eu</span>
+                                    <button class="audio-btn btn-son" onclick="new Audio('https://audiocdn.frenchtoday.com/file/ft-public-files/audioclick/blog/vowels/oe.mp3').play()">🎯 Sound</button>
+                                </div>
+                            </td>
+                            <td class="tip-box">An open variant, sounding very similar to the "er" in the English word "her".</td>
+                            <td>
+                                <div class="phrase-cell-container">
+                                    <div class="text-side">
+                                        <span class="french-txt">Ma soeur aime les fleurs.</span>
+                                        <span class="english-txt">My sister loves flowers.</span>
+                                    </div>
+                                    <button class="audio-btn btn-phrase" onclick="new Audio('https://audiocdn.frenchtoday.com/file/ft-public-files/audioclick/blog/french_pronunciation/08.mp3').play()">📖 Phrase</button>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>9</td>
+                            <td>
+                                <div class="vowel-container">
+                                    <span class="vowel-cell">è, ê, e</span>
+                                    <button class="audio-btn btn-son" onclick="new Audio('https://audiocdn.frenchtoday.com/file/ft-public-files/audioclick/blog/vowels/ay.mp3').play()">🎯 Sound</button>
+                                </div>
+                            </td>
+                            <td class="tip-box">An open "e" sound, identical to the vowel sound found in the English word "hair".</td>
+                            <td>
+                                <div class="phrase-cell-container">
+                                    <div class="text-side">
+                                        <span class="french-txt">Cet hôtel avec la fête est près de la mer.</span>
+                                        <span class="english-txt">This hotel with the party is close to the sea.</span>
+                                    </div>
+                                    <button class="audio-btn btn-phrase" onclick="new Audio('https://audiocdn.frenchtoday.com/file/ft-public-files/audioclick/blog/french_pronunciation/09.mp3').play()">📖 Phrase</button>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>10</td>
+                            <td>
+                                <div class="vowel-container">
+                                    <span class="vowel-cell">é, e</span>
+                                    <button class="audio-btn btn-son" onclick="new Audio('https://audiocdn.frenchtoday.com/file/ft-public-files/audioclick/blog/vowels/et.mp3').play()">🎯 Sound</button>
+                                </div>
+                            </td>
+                            <td class="tip-box">A crisp, closed sound like "ay" but spoken with a narrow mouth. Common for endings like "-er" and "-ez".</td>
+                            <td>
+                                <div class="phrase-cell-container">
+                                    <div class="text-side">
+                                        <span class="french-txt">Éléonore et Anne sont allées à la plage l'été dernier.</span>
+                                        <span class="english-txt">Eleonore and Anne went to the beach last summer.</span>
+                                    </div>
+                                    <button class="audio-btn btn-phrase" onclick="new Audio('https://audiocdn.frenchtoday.com/file/ft-public-files/audioclick/blog/french_pronunciation/10.mp3').play()">📖 Phrase</button>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>11</td>
+                            <td>
+                                <div class="vowel-container">
+                                    <span class="vowel-cell">en, em</span>
+                                    <button class="audio-btn btn-son" onclick="new Audio('https://audiocdn.frenchtoday.com/file/ft-public-files/audioclick/blog/vowels/AN.mp3').play()">🎯 Sound</button>
+                                </div>
+                            </td>
+                            <td class="tip-box">Just another way to spell the exact same back-of-the-throat nasal sound as "an/am".</td>
+                            <td>
+                                <div class="phrase-cell-container">
+                                    <div class="text-side">
+                                        <span class="french-txt">En avant, ensemble !</span>
+                                        <span class="english-txt">Forward, together!</span>
+                                    </div>
+                                    <button class="audio-btn btn-phrase" onclick="new Audio('https://audiocdn.frenchtoday.com/file/ft-public-files/audioclick/blog/french_pronunciation/11.mp3').play()">📖 Phrase</button>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <a href="#" class="back-to-top">▲ Back to Menu</a>
+            </div>
+
+            <div id="vowels-i-o" class="section-anchor">
+                <h2>3. Perfecting "I" & "O" Spaces</h2>
+                <table>
+                    <thead>
+                        <tr>
+                            <th style="width: 5%;">No.</th>
+                            <th style="width: 24%;">Vowel & Isolated Sound Trigger</th>
+                            <th style="width: 33%;">Pronunciation Tip (English)</th>
+                            <th style="width: 38%;">Example Sentence & Context Audio</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>12</td>
+                            <td>
+                                <div class="vowel-container">
+                                    <span class="vowel-cell">i, y</span>
+                                    <button class="audio-btn btn-son" onclick="new Audio('https://audiocdn.frenchtoday.com/file/ft-public-files/audioclick/blog/vowels/I.mp3').play()">🎯 Sound</button>
+                                </div>
+                            </td>
+                            <td class="tip-box">Pronounced like a clean, sharp "ee" in "see". Keep your lips fully stretched back.</td>
+                            <td>
+                                <div class="phrase-cell-container">
+                                    <div class="text-side">
+                                        <span class="french-txt">Il va y aller avec son ami Yves.</span>
+                                        <span class="english-txt">He's going to go there with his friend Yves.</span>
+                                    </div>
+                                    <button class="audio-btn btn-phrase" onclick="new Audio('https://audiocdn.frenchtoday.com/file/ft-public-files/audioclick/blog/french_pronunciation/12.mp3').play()">📖 Phrase</button>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>13</td>
+                            <td>
+                                <div class="vowel-container">
+                                    <span class="vowel-cell">in, im...</span>
+                                    <button class="audio-btn btn-son" onclick="new Audio('https://audiocdn.frenchtoday.com/file/ft-public-files/audioclick/blog/vowels/in.mp3').play()">🎯 Sound</button>
+                                </div>
+                            </td>
+                            <td class="tip-box">The signature smiling French nasal sound. Pronounced identically to "ain".</td>
+                            <td>
+                                <div class="phrase-cell-container">
+                                    <div class="text-side">
+                                        <span class="french-txt">Un matin, un lapin a pris un bain ? Impossible !!</span>
+                                        <span class="english-txt">One morning, a rabbit took a bath? Impossible !!</span>
+                                    </div>
+                                    <button class="audio-btn btn-phrase" onclick="new Audio('https://audiocdn.frenchtoday.com/file/ft-public-files/audioclick/blog/french_pronunciation/13.mp3').play()">📖 Phrase</button>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>14</td>
+                            <td>
+                                <div class="vowel-container">
+                                    <span class="vowel-cell">o, ô</span>
+                                    <button class="audio-btn btn-son" onclick="new Audio('https://audiocdn.frenchtoday.com/file/ft-public-files/audioclick/blog/vowels/o.mp3').play()">🎯 Sound</button>
+                                </div>
+                            </td>
+                            <td class="tip-box">A pure, closed "o" sound. This matches the exact sound of the combination "au/eau".</td>
+                            <td>
+                                <div class="phrase-cell-container">
+                                    <div class="text-side">
+                                        <span class="french-txt">Oh là là, l'hôtel Bonobo est très joli.</span>
+                                        <span class="english-txt">Oh my, the Bonobo hotel is really pretty.</span>
+                                    </div>
+                                    <button class="audio-btn btn-phrase" onclick="new Audio('https://audiocdn.frenchtoday.com/file/ft-public-files/audioclick/blog/french_pronunciation/14.mp3').play()">📖 Phrase</button>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>15</td>
+                            <td>
+                                <div class="vowel-container">
+                                    <span class="vowel-cell">o</span>
+                                    <button class="audio-btn btn-son" onclick="new Audio('https://audiocdn.frenchtoday.com/file/ft-public-files/audioclick/blog/vowels/o-open.mp3').play()">🎯 Sound</button>
+                                </div>
+                            </td>
+                            <td class="tip-box">An open, short variant of "o", sounding closer to the vowel in "not" or "son".</td>
+                            <td>
+                                <div class="phrase-cell-container">
+                                    <div class="text-side">
+                                        <span class="french-txt">Cet homme donne une corde a votre bonne.</span>
+                                        <span class="english-txt">This man gives a rope to your maid.</span>
+                                    </div>
+                                    <button class="audio-btn btn-phrase" onclick="new Audio('https://audiocdn.frenchtoday.com/file/ft-public-files/audioclick/blog/french_pronunciation/15.mp3').play()">📖 Phrase</button>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <a href="#" class="back-to-top">▲ Back to Menu</a>
+            </div>
+
+            <div id="vowels-ou-u" class="section-anchor">
+                <h2>4. Complex Combinations & Nasals</h2>
+                <table>
+                    <thead>
+                        <tr>
+                            <th style="width: 5%;">No.</th>
+                            <th style="width: 24%;">Vowel & Isolated Sound Trigger</th>
+                            <th style="width: 33%;">Pronunciation Tip (English)</th>
+                            <th style="width: 38%;">Example Sentence & Context Audio</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>16</td>
+                            <td>
+                                <div class="vowel-container">
+                                    <span class="vowel-cell">on</span>
+                                    <button class="audio-btn btn-son" onclick="new Audio('https://audiocdn.frenchtoday.com/file/ft-public-files/audioclick/blog/vowels/on.mp3').play()">🎯 Sound</button>
+                                </div>
+                            </td>
+                            <td class="tip-box">A very rounded nasal sound formed directly on top of a closed "o" shape.</td>
+                            <td>
+                                <div class="phrase-cell-container">
+                                    <div class="text-side">
+                                        <span class="french-txt">Son mouton a une toison très longue.</span>
+                                        <span class="english-txt">His sheep has a very long coat.</span>
+                                    </div>
+                                    <button class="audio-btn btn-phrase" onclick="new Audio('https://audiocdn.frenchtoday.com/file/ft-public-files/audioclick/blog/french_pronunciation/16.mp3').play()">📖 Phrase</button>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>17</td>
+                            <td>
+                                <div class="vowel-container">
+                                    <span class="vowel-cell">ou</span>
+                                    <button class="audio-btn btn-son" onclick="new Audio('https://audiocdn.frenchtoday.com/file/ft-public-files/audioclick/blog/vowels/ou.mp3').play()">🎯 Sound</button>
+                                </div>
+                            </td>
+                            <td class="tip-box">Pronounced similar to "oo" in English, but cleanly clipped without shifting your lips during the sound.</td>
+                            <td>
+                                <div class="phrase-cell-container">
+                                    <div class="text-side">
+                                        <span class="french-txt">Où allez-vous ? Nous voulons aller à Tombouctou !</span>
+                                        <span class="english-txt">Where are you going? We want to go to Tombouctou!</span>
+                                    </div>
+                                    <button class="audio-btn btn-phrase" onclick="new Audio('https://audiocdn.frenchtoday.com/file/ft-public-files/audioclick/blog/french_pronunciation/17.mp3').play()">📖 Phrase</button>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>18</td>
+                            <td>
+                                <div class="vowel-container">
+                                    <span class="vowel-cell">oi</span>
+                                    <button class="audio-btn btn-son" onclick="new Audio('https://audiocdn.frenchtoday.com/file/ft-public-files/audioclick/blog/vowels/oi.mp3').play()">🎯 Sound</button>
+                                </div>
+                            </td>
+                            <td class="tip-box">Pronounced like the sound string "wa" in English (e.g., "walk"). It is never read as "oy".</td>
+                            <td>
+                                <div class="phrase-cell-container">
+                                    <div class="text-side">
+                                        <span class="french-txt">Toi ou moi? On décide à trois !</span>
+                                        <span class="english-txt">You or me? Let's decide on three!</span>
+                                    </div>
+                                    <button class="audio-btn btn-phrase" onclick="new Audio('https://audiocdn.frenchtoday.com/file/ft-public-files/audioclick/blog/french_pronunciation/18.mp3').play()">📖 Phrase</button>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>19</td>
+                            <td>
+                                <div class="vowel-container">
+                                    <span class="vowel-cell">oin</span>
+                                    <button class="audio-btn btn-son" onclick="new Audio('https://audiocdn.frenchtoday.com/file/ft-public-files/audioclick/blog/french_pronunciation/oin.mp3').play()">🎯 Sound</button>
+                                </div>
+                            </td>
+                            <td class="tip-box">A fast compound nasal blend. It transitions quickly from a short "ou" to the smiling "in" sound.</td>
+                            <td>
+                                <div class="phrase-cell-container">
+                                    <div class="text-side">
+                                        <span class="french-txt">J'ai besoin de moins de soin.</span>
+                                        <span class="english-txt">I need less medical care.</span>
+                                    </div>
+                                    <button class="audio-btn btn-phrase" onclick="new Audio('https://audiocdn.frenchtoday.com/file/ft-public-files/audioclick/blog/french_pronunciation/19.mp3').play()">📖 Phrase</button>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>20</td>
+                            <td>
+                                <div class="vowel-container">
+                                    <span class="vowel-cell">u</span>
+                                    <button class="audio-btn btn-son" onclick="new Audio('https://audiocdn.frenchtoday.com/file/ft-public-files/audioclick/blog/vowels/u.mp3').play()">🎯 Sound</button>
+                                </div>
+                            </td>
+                            <td class="tip-box">Form a sharp English "ee" sound with your tongue forward, lock it, and push your lips outward in an "o" circle.</td>
+                            <td>
+                                <div class="phrase-cell-container">
+                                    <div class="text-side">
+                                        <span class="french-txt">Tu as vu ? Lulu a conduit une voiture.</span>
+                                        <span class="english-txt">Did you see? Lulu drove a car.</span>
+                                    </div>
+                                    <button class="audio-btn btn-phrase" onclick="new Audio('https://audiocdn.frenchtoday.com/file/ft-public-files/audioclick/blog/french_pronunciation/20.mp3').play()">📖 Phrase</button>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <a href="#" class="back-to-top">▲ Back to Menu</a>
+            </div>
+
+            <footer>
+                <p>Easy French Pronunciation • Study Companion Guide • Open this file locally to practice your listening skills anytime.</p>
+            </footer>
+        </div>
+    </div>
+
+</body>
+</html>
